@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmileCare Dental</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .hero-section {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .services-section {
+            padding: 60px 0;
+        }
+
+        .service-card {
+            transition: transform 0.3s;
+        }
+
+            .service-card:hover {
+                transform: translateY(-5px);
+            }
+
+        body {
+            padding-top: 80px; /* To avoid navbar overlap */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                <img src="https://dentalwebstorage001.blob.core.windows.net/dentalphoto/logo.png?sp=r&st=2026-03-12T04:24:10Z&se=2026-03-12T12:39:10Z&spr=https&sv=2024-11-04&sr=b&sig=ZEMhJyHl2SDBKqYqYN4Pj1%2BnI3DXSEom5loU6szMswE%3D" alt="SmileCare Dental" height="50">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#hero">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light pt-5 pb-3 mt-5">
+        <div class="container">
+            <div class="row">
+                <!-- About -->
+                <div class="col-md-4 mb-4">
+                    <h5>SmileCare Dental</h5>
+                    <p>Providing professional dental care for you and your family in a friendly and comfortable environment.</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#hero" class="text-light text-decoration-none">Home</a></li>
+                        <li><a href="#services" class="text-light text-decoration-none">Services</a></li>
+                        <li><a href="#about" class="text-light text-decoration-none">About</a></li>
+                        <li><a href="#contact" class="text-light text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="col-md-4 mb-4">
+                    <h5>Contact Us</h5>
+                    <p><i class="bi bi-telephone-fill me-2"></i>+63 912 345 6789</p>
+                    <p><i class="bi bi-envelope-fill me-2"></i>info@smilecaredental.com</p>
+                    <p><i class="bi bi-geo-alt-fill me-2"></i>123 Smile Street, Manila, Philippines</p>
+                </div>
+            </div>
+
+            <hr class="border-light">
+
+            <div class="text-center">
+                <p class="mb-0">&copy; @DateTime.Now.Year SmileCare Dental. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
