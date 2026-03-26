@@ -1,0 +1,68 @@
+﻿@model DentalClinicWebsite.Models.Appointment
+
+@{
+    ViewData["Title"] = "Edit Booking";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Edit Booking</h2>
+
+    <form asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+        <input asp-for="Id" type="hidden" />
+
+        <div class="mb-3">
+            <label asp-for="FullName" class="form-label"></label>
+            <input asp-for="FullName" class="form-control" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Phone" class="form-label"></label>
+            <input asp-for="Phone" class="form-control" />
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Service" class="form-label"></label>
+            <select asp-for="Service" class="form-select">
+                <option value="">Choose a service</option>
+                <option value="General Dentistry">General Dentistry</option>
+                <option value="Cosmetic Dentistry">Cosmetic Dentistry</option>
+                <option value="Orthodontics">Orthodontics</option>
+                <option value="Other">Other</option>
+            </select>
+            <span asp-validation-for="Service" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PreferredDate" class="form-label"></label>
+            <input asp-for="PreferredDate" type="date" class="form-control" />
+            <span asp-validation-for="PreferredDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PreferredTime" class="form-label"></label>
+            <input asp-for="PreferredTime" type="time" class="form-control" />
+            <span asp-validation-for="PreferredTime" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Message" class="form-label"></label>
+            <textarea asp-for="Message" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+        <a asp-action="Index" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

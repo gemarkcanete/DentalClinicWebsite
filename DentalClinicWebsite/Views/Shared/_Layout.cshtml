@@ -4,9 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>SmileCare Dental</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
     <style>
         .hero-section {
             padding: 80px 0;
@@ -21,83 +23,408 @@
             transition: transform 0.3s;
         }
 
-            .service-card:hover {
-                transform: translateY(-5px);
-            }
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
 
         body {
-            padding-top: 80px; /* To avoid navbar overlap */
+            padding-top: 80px;
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
         <div class="container">
             <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                <img src="https://dentalwebstorage001.blob.core.windows.net/dentalphoto/logo.png?sp=r&st=2026-03-12T04:24:10Z&se=2026-03-12T12:39:10Z&spr=https&sv=2024-11-04&sr=b&sig=ZEMhJyHl2SDBKqYqYN4Pj1%2BnI3DXSEom5loU6szMswE%3D" alt="SmileCare Dental" height="50">
+                <img src="https://dentalwebstorage001.blob.core.windows.net/dentalphoto/logo.png?sp=r&st=2026-03-18T09:39:18Z&se=2026-04-09T17:54:18Z&spr=https&sv=2024-11-04&sr=b&sig=qAL5wDI3%2B5IpdlkRXdkBq6Tq06%2B0iaim6fu7QzN7ZHI%3D" alt="SmileCare Dental" height="50">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
                     <li class="nav-item"><a class="nav-link" href="#hero">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a asp-controller="AdminBookings" asp-action="Index" class="nav-link">Manage Bookings</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-light pt-5 pb-3 mt-5">
+    <div id="chat-widget" class="chat-widget">
+        <div class="chat-header">
+            SmileCare AI Assistant
+            <button type="button" id="chat-close">×</button>
+        </div>
+
+        <div id="chat-messages" class="chat-messages">
+            <div class="bot-message">Hi! How can I help you today?</div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="userMessage" placeholder="Type your message..." />
+            <button id="sendBtn" type="button">Send</button>
+        </div>
+    </div>
+
+    <button id="chat-toggle" class="chat-toggle-btn">Chat</button>
+
+    <footer class="site-footer pt-5 pb-3">
         <div class="container">
-            <div class="row">
-                <!-- About -->
-                <div class="col-md-4 mb-4">
-                    <h5>SmileCare Dental</h5>
-                    <p>Providing professional dental care for you and your family in a friendly and comfortable environment.</p>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5 class="footer-title">SmileCare Dental</h5>
+                    <p class="footer-text">
+                        Providing professional dental care for you and your family in a friendly and comfortable environment.
+                    </p>
                 </div>
 
-                <!-- Quick Links -->
-                <div class="col-md-4 mb-4">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#hero" class="text-light text-decoration-none">Home</a></li>
-                        <li><a href="#services" class="text-light text-decoration-none">Services</a></li>
-                        <li><a href="#about" class="text-light text-decoration-none">About</a></li>
-                        <li><a href="#contact" class="text-light text-decoration-none">Contact</a></li>
+                <div class="col-md-2">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#hero">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#doctors">Doctors</a></li>
+                        <li><a href="#testimonials">Reviews</a></li>
+                        <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
 
-                <!-- Contact Info -->
-                <div class="col-md-4 mb-4">
-                    <h5>Contact Us</h5>
-                    <p><i class="bi bi-telephone-fill me-2"></i>+63 912 345 6789</p>
-                    <p><i class="bi bi-envelope-fill me-2"></i>info@smilecaredental.com</p>
-                    <p><i class="bi bi-geo-alt-fill me-2"></i>123 Smile Street, Manila, Philippines</p>
+                <div class="col-md-3">
+                    <h5 class="footer-title">Opening Hours</h5>
+                    <ul class="list-unstyled footer-text">
+                        <li>Mon - Fri: 9:00 AM to 5:00 PM</li>
+                        <li>Saturday: 9:00 AM - 1:00 PM</li>
+                        <li>Sunday: Closed</li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3">
+                    <h5 class="footer-title">Connect With Us</h5>
+                    <p class="footer-text mb-2">+65 9123 4567</p>
+                    <p class="footer-text mb-3">info@smiledental.com</p>
+
+                    <div class="social-links">
+                        <a href="#" class="me-3">Facebook</a>
+                        <a href="#" class="me-3">Instagram</a>
+                        <a href="#">WhatsApp</a>
+                    </div>
                 </div>
             </div>
 
-            <hr class="border-light">
+            <hr class="footer-divider">
 
-            <div class="text-center">
-                <p class="mb-0">&copy; @DateTime.Now.Year SmileCare Dental. All rights reserved.</p>
+            <div class="d-md-flex justify-content-between align-items-center text-center text-md-start">
+                <p class="mb-2 mb-md-0 footer-bottom-text">
+                    © 2026 SmileCare Dental. All rights reserved.
+                </p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <span class="mx-2">|</span>
+                    <a href="#">Terms & Conditions</a>
+                </div>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const chatToggle = document.getElementById("chat-toggle");
+        const chatWidget = document.getElementById("chat-widget");
+        const chatClose = document.getElementById("chat-close");
+        const sendBtn = document.getElementById("sendBtn");
+        const userMessageInput = document.getElementById("userMessage");
+        const chatMessages = document.getElementById("chat-messages");
+
+        const aiApiUrl = "https://localhost:7015/api/chat";
+        const bookingApiUrl = "https://localhost:7015/api/appointments";
+
+        let bookingMode = false;
+        let bookingStep = "";
+        let bookingData = {
+        fullName: "",
+        email: "",
+        phone: "",
+        service: "",
+        preferredDate: "",
+        preferredTime: ""
+        };
+
+        let activeConfirmBox = null;
+
+        chatToggle.addEventListener("click", () => {
+        chatWidget.style.display = "flex";
+        chatToggle.style.display = "none";
+        });
+
+        chatClose.addEventListener("click", () => {
+        chatWidget.style.display = "none";
+        chatToggle.style.display = "block";
+        });
+
+        function appendMessage(text, type) {
+        const div = document.createElement("div");
+        div.className = type === "user" ? "user-message" : "bot-message";
+        div.textContent = text;
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function createTypingIndicator() {
+        const typing = document.createElement("div");
+        typing.className = "bot-message typing-indicator";
+        typing.innerHTML = `<span></span><span></span><span></span>`;
+        chatMessages.appendChild(typing);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return typing;
+        }
+
+        function botReplyWithDelay(text, delay = 450) {
+        const typing = createTypingIndicator();
+
+        setTimeout(() => {
+        typing.remove();
+        appendMessage(text, "bot");
+        }, delay);
+        }
+
+        function removeConfirmBox() {
+        if (activeConfirmBox) {
+        activeConfirmBox.remove();
+        activeConfirmBox = null;
+        }
+        }
+
+        function resetBookingFlow() {
+        bookingMode = false;
+        bookingStep = "";
+        bookingData = {
+        fullName: "",
+        email: "",
+        phone: "",
+        service: "",
+        preferredDate: "",
+        preferredTime: ""
+        };
+        }
+
+        function startBookingFlow() {
+        bookingMode = true;
+        bookingStep = "fullName";
+        botReplyWithDelay("Sure, I can help you book an appointment. What is your full name?");
+        }
+
+        function handleBookingStep(message) {
+        if (bookingStep === "fullName") {
+        bookingData.fullName = message;
+        bookingStep = "email";
+        botReplyWithDelay("Thanks. What is your email address?");
+        return;
+        }
+
+        if (bookingStep === "email") {
+        bookingData.email = message;
+        bookingStep = "phone";
+        botReplyWithDelay("Got it. What is your phone number?");
+        return;
+        }
+
+        if (bookingStep === "phone") {
+        bookingData.phone = message;
+        bookingStep = "service";
+        setTimeout(() => {
+        showServiceOptions();
+        }, 400);
+        return;
+        }
+
+        if (bookingStep === "preferredDate") {
+        bookingData.preferredDate = message;
+        bookingStep = "preferredTime";
+        botReplyWithDelay("What time would you prefer?");
+        return;
+        }
+
+        if (bookingStep === "preferredTime") {
+        bookingData.preferredTime = message;
+        bookingStep = "confirm";
+        setTimeout(() => {
+        showBookingConfirmation();
+        }, 400);
+        return;
+        }
+        }
+
+        function showServiceOptions() {
+        botReplyWithDelay("Please choose a service:", 350);
+
+        setTimeout(() => {
+        const options = document.createElement("div");
+        options.className = "service-options";
+        options.innerHTML = `
+        <button type="button" onclick="selectService('General Dentistry')">General Dentistry</button>
+        <button type="button" onclick="selectService('Cosmetic Dentistry')">Cosmetic Dentistry</button>
+        <button type="button" onclick="selectService('Orthodontics')">Orthodontics</button>
+        `;
+        chatMessages.appendChild(options);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 380);
+        }
+
+        window.selectService = function(service) {
+        bookingData.service = service;
+        appendMessage(service, "user");
+        bookingStep = "preferredDate";
+        botReplyWithDelay("What date would you prefer? Please use YYYY-MM-DD format.");
+        };
+
+        function showBookingConfirmation() {
+        botReplyWithDelay(
+        `Please confirm your booking:
+        Name: ${bookingData.fullName}
+        Email: ${bookingData.email}
+        Phone: ${bookingData.phone}
+        Service: ${bookingData.service}
+        Date: ${bookingData.preferredDate}
+        Time: ${bookingData.preferredTime}`, 400
+        );
+
+        setTimeout(() => {
+        removeConfirmBox();
+
+        const confirmBox = document.createElement("div");
+        confirmBox.className = "service-options confirm-box";
+        confirmBox.innerHTML = `
+        <button type="button" onclick="confirmBooking()">Confirm</button>
+        <button type="button" onclick="cancelBooking()">Cancel</button>
+        `;
+        chatMessages.appendChild(confirmBox);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        activeConfirmBox = confirmBox;
+        }, 430);
+        }
+
+        window.confirmBooking = async function() {
+        removeConfirmBox();
+
+        const typing = createTypingIndicator();
+
+        try {
+        const response = await fetch(bookingApiUrl, {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+        fullName: bookingData.fullName,
+        email: bookingData.email,
+        phone: bookingData.phone,
+        service: bookingData.service,
+        preferredDate: bookingData.preferredDate,
+        preferredTime: bookingData.preferredTime,
+        message: ""
+        })
+        });
+
+        setTimeout(async () => {
+        typing.remove();
+
+        if (!response.ok) {
+        const errorText = await response.text();
+        appendMessage("Sorry, booking failed. Please check your details and try again.", "bot");
+        console.error(errorText);
+        return;
+        }
+
+        appendMessage("Your appointment request has been submitted successfully.", "bot");
+        resetBookingFlow();
+        }, 600);
+        } catch (error) {
+        setTimeout(() => {
+        typing.remove();
+        appendMessage("Sorry, something went wrong while saving your booking.", "bot");
+        }, 600);
+        }
+        };
+
+        window.cancelBooking = function() {
+        removeConfirmBox();
+        resetBookingFlow();
+        botReplyWithDelay("Your booking request has been cancelled.", 300);
+        };
+
+        async function sendToAi(message) {
+        const typing = createTypingIndicator();
+
+        try {
+        const response = await fetch(aiApiUrl, {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: message })
+        });
+
+        const data = await response.json();
+
+        setTimeout(() => {
+        typing.remove();
+        appendMessage(data.reply || "Sorry, no response received.", "bot");
+        }, 500);
+        } catch (error) {
+        setTimeout(() => {
+        typing.remove();
+        appendMessage("Sorry, something went wrong.", "bot");
+        }, 500);
+        }
+        }
+
+        async function sendMessage() {
+        const message = userMessageInput.value.trim();
+        if (!message) return;
+
+        appendMessage(message, "user");
+        userMessageInput.value = "";
+
+        const lowerMessage = message.toLowerCase();
+
+        if (!bookingMode &&
+        (lowerMessage.includes("book") ||
+        lowerMessage.includes("appointment") ||
+        lowerMessage.includes("schedule"))) {
+        startBookingFlow();
+        return;
+        }
+
+        if (bookingMode) {
+        handleBookingStep(message);
+        return;
+        }
+
+        await sendToAi(message);
+        }
+
+        sendBtn.addEventListener("click", sendMessage);
+
+        userMessageInput.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+        sendMessage();
+        }
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

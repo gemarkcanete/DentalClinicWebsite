@@ -10,6 +10,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlConnection")));
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // Configure HTTP request pipeline

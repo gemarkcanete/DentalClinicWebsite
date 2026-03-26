@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="../DentalClinicWebsiteapi/DentalClinicWebsiteapi.csproj" Id="85d5d8e3-8b36-4c64-9be1-31ef72a23d08" />
   <Project Path="DentalClinicWebsite/DentalClinicWebsite.csproj" />
 </Solution>
