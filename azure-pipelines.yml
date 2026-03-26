@@ -1,0 +1,42 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  webAppName: 'https://smilecaredental-bfg0dqg7gnehezby.southeastasia-01.azurewebsites.net/'
+  azureSubscription: 'AzureConnection'
+
+steps:
+
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  displayName: Restore NuGet Packages
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  displayName: Build Solution
+  inputs:
+    solution: '$(solution)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:PackageLocation="$(Build.ArtifactStagingDirectory)\\"'
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Build Artifact
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+
+- task: AzureWebApp@1
+  displayName: Deploy to Azure App Service
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    appName: '$(smiledentalclinic)'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
