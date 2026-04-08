@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         .hero-section {
             padding: 80px 0;
@@ -163,6 +163,7 @@
         };
 
         let activeConfirmBox = null;
+        let activePickerBox = null;
 
         chatToggle.addEventListener("click", () => {
         chatWidget.style.display = "flex";
@@ -207,6 +208,13 @@
         }
         }
 
+        function removePickerBox() {
+        if (activePickerBox) {
+        activePickerBox.remove();
+        activePickerBox = null;
+        }
+        }
+
         function resetBookingFlow() {
         bookingMode = false;
         bookingStep = "";
@@ -218,6 +226,8 @@
         preferredDate: "",
         preferredTime: ""
         };
+        removeConfirmBox();
+        removePickerBox();
         }
 
         function startBookingFlow() {
@@ -249,22 +259,6 @@
         }, 400);
         return;
         }
-
-        if (bookingStep === "preferredDate") {
-        bookingData.preferredDate = message;
-        bookingStep = "preferredTime";
-        botReplyWithDelay("What time would you prefer?");
-        return;
-        }
-
-        if (bookingStep === "preferredTime") {
-        bookingData.preferredTime = message;
-        bookingStep = "confirm";
-        setTimeout(() => {
-        showBookingConfirmation();
-        }, 400);
-        return;
-        }
         }
 
         function showServiceOptions() {
@@ -287,7 +281,81 @@
         bookingData.service = service;
         appendMessage(service, "user");
         bookingStep = "preferredDate";
-        botReplyWithDelay("What date would you prefer? Please use YYYY-MM-DD format.");
+        botReplyWithDelay("Please choose your preferred date.", 300);
+
+        setTimeout(() => {
+        showDatePicker();
+        }, 350);
+        };
+
+        function showDatePicker() {
+        removePickerBox();
+
+        const pickerBox = document.createElement("div");
+        pickerBox.className = "service-options";
+        pickerBox.innerHTML = `
+        <input type="date" id="datePicker" />
+        <button type="button" onclick="submitDate()">Select Date</button>
+        `;
+
+        chatMessages.appendChild(pickerBox);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        activePickerBox = pickerBox;
+
+        const dateInput = document.getElementById("datePicker");
+        const today = new Date().toISOString().split("T")[0];
+        dateInput.min = today;
+        }
+
+        window.submitDate = function() {
+        const dateInput = document.getElementById("datePicker");
+        if (!dateInput.value) {
+        alert("Please select a date.");
+        return;
+        }
+
+        bookingData.preferredDate = dateInput.value;
+        appendMessage(dateInput.value, "user");
+        removePickerBox();
+
+        bookingStep = "preferredTime";
+        botReplyWithDelay("Please choose your preferred time.", 300);
+
+        setTimeout(() => {
+        showTimePicker();
+        }, 350);
+        };
+
+        function showTimePicker() {
+        removePickerBox();
+
+        const pickerBox = document.createElement("div");
+        pickerBox.className = "service-options";
+        pickerBox.innerHTML = `
+        <input type="time" id="timePicker" />
+        <button type="button" onclick="submitTime()">Select Time</button>
+        `;
+
+        chatMessages.appendChild(pickerBox);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        activePickerBox = pickerBox;
+        }
+
+        window.submitTime = function() {
+        const timeInput = document.getElementById("timePicker");
+        if (!timeInput.value) {
+        alert("Please select a time.");
+        return;
+        }
+
+        bookingData.preferredTime = timeInput.value;
+        appendMessage(timeInput.value, "user");
+        removePickerBox();
+
+        bookingStep = "confirm";
+        setTimeout(() => {
+        showBookingConfirmation();
+        }, 300);
         };
 
         function showBookingConfirmation() {
@@ -400,10 +468,12 @@
 
         const lowerMessage = message.toLowerCase();
 
-        if (!bookingMode &&
+        if (
+        !bookingMode &&
         (lowerMessage.includes("book") ||
         lowerMessage.includes("appointment") ||
-        lowerMessage.includes("schedule"))) {
+        lowerMessage.includes("schedule"))
+        ) {
         startBookingFlow();
         return;
         }

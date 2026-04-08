@@ -636,3 +636,13 @@ html {
         opacity: 1;
     }
 }
+
+.service-options input[type="date"],
+.service-options input[type="time"] {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
